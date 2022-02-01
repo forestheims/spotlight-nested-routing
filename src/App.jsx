@@ -103,8 +103,6 @@ function MovieList() {
 
 function CategoryList() {
   const { url, path } = useRouteMatch();
-  console.log(url);
-  console.log(path);
   return (
     <div>
       <ul>
