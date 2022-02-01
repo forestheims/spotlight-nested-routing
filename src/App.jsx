@@ -82,7 +82,23 @@ function MovieList() {
 }
 
 function CategoryList() {
-  return <div></div>;
+  const { url, path } = useRouteMatch();
+  console.log(url);
+  console.log(path);
+  return (
+    <div>
+      <ul>
+        {movieCategories.map(({ id, category }) => (
+          <li key={id}>
+            <Link to={`${url}/${id}`}>{category}</Link>
+          </li>
+        ))}
+      </ul>
+      <Route path={`${path}/:categoryid`}>
+        <MovieList />
+      </Route>
+    </div>
+  );
 }
 
 function Home() {
