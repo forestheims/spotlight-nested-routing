@@ -74,13 +74,23 @@ const movieCategories = [
 ];
 
 function Movie() {
-  return <div></div>;
+  const { categoryid, movieid } = useParams();
+  const movie = movieCategories
+    .find((category) => category.id === categoryid)
+    .movies.find((movie) => movie.id === movieid);
+
+  return (
+    <div>
+      <h3>{movie.title}</h3>
+      <img src={movie.poster} style={{ width: '300px' }} />
+    </div>
+  );
 }
 
 function MovieList() {
-  const { categoryId } = useParams();
+  const { categoryid } = useParams();
   const { url, path } = useRouteMatch();
-  const category = movieCategories.find(({ id }) => id === categoryId);
+  const category = movieCategories.find(({ id }) => id === categoryid);
   return (
     <div>
       <p>{category.category}</p>
@@ -94,7 +104,7 @@ function MovieList() {
           );
         })}
       </ul>
-      <Route path={`${path}/:movieId`}>
+      <Route path={`${path}/:movieid`}>
         <Movie />
       </Route>
     </div>
