@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Link,
   Route,
   useRouteMatch,
@@ -74,31 +74,16 @@ const movieCategories = [
 ];
 
 function Movie() {
-  const { categoryId, movieId } = useParams();
-  const movie = movieCategories
-    .find(({ id }) => id === categoryId)
-    .movies.find(({ id }) => id === movieId);
-
-  const { title, poster } = movie;
-  return (
-    <div>
-      <h3>{title}</h3>
-      <img src={poster} alt={title} height={300} width={300} />
-    </div>
-  );
+  return <div></div>;
 }
 
 function MovieList() {
   const { categoryId } = useParams();
   const { url, path } = useRouteMatch();
-  console.log('url in MovieList', url); // 💡 Use url for nested links
-  console.log('path in MovieList', path); // 💡 Use path for nested routes
-
   const category = movieCategories.find(({ id }) => id === categoryId);
-  console.log('category', category);
   return (
     <div>
-      <h2>{category.category}</h2>
+      <p>{category.category}</p>
       <p>{category.description}</p>
       <ul>
         {category.movies.map((movie) => {
@@ -109,9 +94,6 @@ function MovieList() {
           );
         })}
       </ul>
-
-      <hr />
-
       <Route path={`${path}/:movieId`}>
         <Movie />
       </Route>
@@ -120,29 +102,17 @@ function MovieList() {
 }
 
 function CategoryList() {
-  // Custom Hook we get from react router dom for nested routing
   const { url, path } = useRouteMatch();
-  console.log('url in CategoryList', url); // 💡 Use url for nested links
-  console.log('path in CategoryList', path); // 💡 Use path for nested routes
-
   return (
     <div>
-      <h1>Categories</h1>
       <ul>
-        {movieCategories.map(({ category, id }) => {
-          return (
-            <li key={id}>
-              {/* A nested link that's using the `url` from `useRouteMatch()`  */}
-              <Link to={`${url}/${id}`}>{category}</Link>
-            </li>
-          );
-        })}
+        {movieCategories.map(({ id, category }) => (
+          <li key={id}>
+            <Link to={`${url}/${id}`}>{category}</Link>
+          </li>
+        ))}
       </ul>
-
-      <hr />
-
-      {/* The URL we want to match: /category/:categoryId */}
-      <Route path={`${path}/:categoryId`}>
+      <Route path={`${path}/:categoryid`}>
         <MovieList />
       </Route>
     </div>
@@ -155,7 +125,7 @@ function Home() {
 
 export default function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <div style={{ width: 1000, margin: '0 auto' }}>
         <ul>
           <li>
@@ -173,6 +143,6 @@ export default function App() {
           <CategoryList />
         </Route>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
